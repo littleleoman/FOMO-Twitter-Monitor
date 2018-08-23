@@ -75,6 +75,24 @@ class Management(object):
             print('Post failed with error', post_req.status_code, 'because', post_req.reason)
         else:
             print('Post successful!')
+            
+    def post_error_to_discord(self, error_code, error_message):
+        headers = {
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "content": "An error has occurred",
+            "embeds": [{
+                "title": error_code,
+                "description": error_message,
+                "color": 0x76d6ff,
+            }]
+        }
+        post_req = requests.post(f'https://discordapp.com/api/webhooks/{WEBHOOK_ID}/{WEBHOOK_TOKEN}', data=json.dumps(payload), headers=headers)
+        if post_req.status_code != 200:
+            print('Post failed with error', post_req.status_code, 'because', post_req.reason)
+        else:
+            print('Post successful!')
 
 
 class TwitterAuthenticator():
@@ -123,15 +141,17 @@ class TwitterStream(StreamListener):
     
     def on_error(self, status_code):
         if status_code == 420:
-            print("Error: 420")
+            error_code = "Error: 420"
             sleep_time = 60 * (2 ** self.error_420)
-            print("Rate limit reached. Will attempt to reconnect in: " + str(sleep_time/60) + " minutes.")
+            error_message = "Rate limit reached. Will attempt to reconnect in: " + str(sleep_time/60) + " minutes."
+            self.management.post_error_to_discord(error_code, error_message)
             time.sleep(sleep_time)
             self.error_420 += 1
         else:
-            print("Error: " + str(status_code))
+            error_code = "Error: " + str(status_code)
             sleep_time = 5 * (2 ** self.error_others)
-            print("An error has occured. Will attempt to reconnect in: " + str(sleep_time/60) + " minutes.")
+            error_message = "An error has occured. Will attempt to reconnect in: " + str(sleep_time/60) + " minutes."
+            self.management.post_error_to_discord(error_code, error_message)
             time.sleept(sleep_time)
             self.error_others += 1
         return True
