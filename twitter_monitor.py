@@ -114,7 +114,6 @@ class TwitterStream(StreamListener):
     def on_status(self, status):
         if self.management.original_tweet(status):
             try:
-                print(status)
                 if status.user.id_str in client.user_ids:
                     text = ''
                     tweet_status = ''
@@ -140,6 +139,7 @@ class TwitterStream(StreamListener):
         return True
     
     def on_error(self, status_code):
+        print("ERROR: " + str(status_code))
         if status_code == 420:
             error_code = "Error: 420"
             sleep_time = 60 * (2 ** self.error_420)
