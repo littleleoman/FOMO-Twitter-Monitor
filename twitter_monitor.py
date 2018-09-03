@@ -16,13 +16,13 @@ from tweepy import Stream
 from tweepy.streaming import StreamListener
 
 
-CONSUMER_KEY = os.environ["CONSUMER_KEY"]
-CONSUMER_SECRET = os.environ["CONSUMER_SECRET"]
-ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
-ACCESS_SECRET = os.environ["ACCESS_SECRET"]
+CONSUMER_KEY = os.environ["CHIRP_CONSUMER_KEY"]
+CONSUMER_SECRET = os.environ["CHIRP_CONSUMER_SECRET"]
+ACCESS_TOKEN = os.environ["CHIRP_ACCESS_TOKEN"]
+ACCESS_SECRET = os.environ["CHIRP_ACCESS_SECRET"]
 
-WEBHOOK_ID = os.environ["WEBHOOK_ID"]
-WEBHOOK_TOKEN = os.environ["WEBHOOK_TOKEN"]
+WEBHOOK_ID = os.environ["CHIRP_WEBHOOK_ID"]
+WEBHOOK_TOKEN = os.environ["CHIRP_WEBHOOK_TOKEN"]
 
 class Client():
     def __init__(self):
