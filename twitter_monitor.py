@@ -55,20 +55,14 @@ class Management(object):
         else:
             return True
     
-    def post_to_discord(self, tweet_status, author, text, profile_pic):
+    def post_to_discord(self, author, text, profile_pic):
         headers = {
             "Content-Type": "application/json"
         }
         payload = {
-            "content": tweet_status,
-            "embeds": [{
-                "title": author,
-                "description": text,
-                "color": 0x76d6ff,
-                "thumbnail": {
-                    "url": profile_pic
-                }
-            }]
+            "username": author,
+            "avatar_url": profile_pic,
+            "content": text
         }
         post_req = requests.post(f'https://discordapp.com/api/webhooks/{WEBHOOK_ID}/{WEBHOOK_TOKEN}', data=json.dumps(payload), headers=headers)
         if post_req.status_code != 200:
@@ -118,22 +112,26 @@ class TwitterStream(StreamListener):
                     text = ''
                     tweet_status = ''
                     if hasattr(status, 'retweeted_status'):
-                        text += status.retweeted_status.text + f'\n[View on Twitter](https://www.twitter.com/{status.user.screen_name})'
-                        tweet_status = "RETWEET"
-                    if hasattr(status, 'extended_tweet'):
-                        text += status.extended_tweet['full_text'] + f'\n[View on Twitter](https://www.twitter.com/{status.user.screen_name})'
-                        tweet_status = "New Tweet"
+                        if status.user.id_str == client.user_ids[0]:
+                            pass
+                        else:
+                            if status.retweeted_status.text.find(status.text):
+                                text += status.text + f'\n[View on Twitter](https://www.twitter.com/{status.user.screen_name})\n'
+                            else:
+                                text += status.text + '\n\n'
+                                text += status.retweeted_status.text + f'\n[View on Twitter](https://www.twitter.com/{status.user.screen_name})\n'
+                    elif hasattr(status, 'extended_tweet'):
+                        text += status.extended_tweet['full_text'] + f'\n[View on Twitter](https://www.twitter.com/{status.user.screen_name})\n'
                     else:
-                        text += status.text + f'\n[View on Twitter](https://www.twitter.com/{status.user.screen_name})'
-                        tweet_status = "New Tweet"
+                        text += status.text + f'\n[View on Twitter](https://www.twitter.com/{status.user.screen_name})\n' 
                         
                     if re.search('check for access|fta|ftl|champs|check in|check-in|restock|available|password|pw|pw:|password:|copies|sold out|update', text, re.IGNORECASE):
                         username = ''
                         if status.user.screen_name[0] == '_':
-                            username += '\\' + status.user.screen_name
+                            username += status.user.screen_name
                         else:
                             username += status.user.screen_name
-                        self.management.post_to_discord(tweet_status, username, text, status.user.profile_image_url_https)
+                        self.management.post_to_discord(username, text, status.user.profile_image_url_https)
             except BaseException as e:
                 print("Error on_data %s" % str(e))        
         return True
