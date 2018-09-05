@@ -31,7 +31,7 @@ class Client():
         # [cybersole, copped, coppedproxies, GhostAIO, dashe, astrobotio,
         #  aiomacbot, fogldn, kickmoji_io, Splashforcebot, oakbotnet, wopbot,
         #  dna_io, destroyerbots, dropclub_io, DiSolveIO, ycopp_com, VypernetworkIO,
-        #  SoleSorcerer, EveAIO, trip_io, dotbotsio, sScoutApp, ftlcodes ]    
+        #  SoleSorcerer, EveAIO, trip_io, dotbotsio, sScoutApp, ftlcodes, BackdoorIO ]    
         self.user_ids = ['718857559403270144', '1537575638', '892949517598736384',
                         '940121522269691904', '897593602846728201', '970559950077480961',
                         '742793690838642688', '751173964119105537', '948158419957100544',
@@ -39,13 +39,12 @@ class Client():
                         '951498765701140480', '887790349699227650', '945724122369347585',
                         '956619435456024576', '768416589750345728', '952919889379053568',
                         '863006606124085248', '914897340280053763', '944071591201267712',
-                        '936550436470800384', '852706122226176000', '941082441107853312', '796180892997873664']
+                        '936550436470800384', '852706122226176000', '941082441107853312', 
+                        '936472526472933376', '796180892997873664']
 
 class Management(object):
     
     def original_tweet(self, status):
-    #     if hasattr(status, 'retweeted_status'):
-    #         return False
         if status.in_reply_to_status_id != None:
             return False
         elif status.in_reply_to_screen_name != None:

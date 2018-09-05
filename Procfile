@@ -1,1 +1,1 @@
-worker: python twitter_monitor.py
+worker: python3 twitter_monitor.py
