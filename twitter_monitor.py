@@ -110,19 +110,20 @@ class TwitterStream(StreamListener):
                 if status.user.id_str in client.user_ids:
                     text = ''
                     tweet_status = ''
+                    
                     if hasattr(status, 'retweeted_status'):
                         if status.user.id_str == client.user_ids[0]:
                             pass
                         else:
                             if status.retweeted_status.text.find(status.text):
-                                text += status.text + f'\n[View on Twitter](https://www.twitter.com/{status.user.screen_name})\n'
+                                text += status.text + f'\n[View on Twitter](<https://www.twitter.com/i/web/status/{status.id_str}>)\n'
                             else:
                                 text += status.text + '\n\n'
-                                text += status.retweeted_status.text + f'\n[View on Twitter](https://www.twitter.com/{status.user.screen_name})\n'
+                                text += status.retweeted_status.text + f'\n[View on Twitter](<https://www.twitter.com/i/web/status/{status.id_str}>)\n'
                     elif hasattr(status, 'extended_tweet'):
-                        text += status.extended_tweet['full_text'] + f'\n[View on Twitter](https://www.twitter.com/{status.user.screen_name})\n'
+                        text += status.extended_tweet['full_text'] + f'\n[View on Twitter](<https://www.twitter.com/i/web/status/{status.id_str}>)\n'
                     else:
-                        text += status.text + f'\n[View on Twitter](https://www.twitter.com/{status.user.screen_name})\n' 
+                        text += status.text + f'\n[View on Twitter](<https://www.twitter.com/i/web/status/{status.id_str}>)\n' 
                         
                     if re.search('check for access|fta|ftl|champs|check in|check-in|restock|available|password|pw|pw:|password:|copies|sold out|update', text, re.IGNORECASE):
                         username = ''
