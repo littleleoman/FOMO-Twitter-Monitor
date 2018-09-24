@@ -40,11 +40,16 @@ class Client():
                         '956619435456024576', '768416589750345728', '952919889379053568',
                         '863006606124085248', '914897340280053763', '944071591201267712',
                         '936550436470800384', '852706122226176000', '941082441107853312', 
-                        '936472526472933376', '796180892997873664']
+                        '936472526472933376']
 
 class Management(object):
     
     def original_tweet(self, status):
+        if hasattr(status, 'retweeted_status'):
+            if status.user.id_str == client.user_ids[0]:
+                return True
+            else:
+                return False
         if status.in_reply_to_status_id != None:
             return False
         elif status.in_reply_to_screen_name != None:
@@ -111,16 +116,16 @@ class TwitterStream(StreamListener):
                     text = ''
                     tweet_status = ''
                     
-                    if hasattr(status, 'retweeted_status'):
-                        if status.user.id_str == client.user_ids[0]:
-                            pass
-                        else:
-                            if status.retweeted_status.text.find(status.text):
-                                text += status.text + f'\n[View on Twitter](<https://www.twitter.com/i/web/status/{status.id_str}>)\n'
-                            else:
-                                text += status.text + '\n\n'
-                                text += status.retweeted_status.text + f'\n[View on Twitter](<https://www.twitter.com/i/web/status/{status.id_str}>)\n'
-                    elif hasattr(status, 'extended_tweet'):
+#                     if hasattr(status, 'retweeted_status'):
+#                         if status.user.id_str == client.user_ids[0]:
+#                             pass
+#                         else:
+#                             if status.retweeted_status.text.find(status.text):
+#                                 text += status.text + f'\n[View on Twitter](<https://www.twitter.com/i/web/status/{status.id_str}>)\n'
+#                             else:
+#                                 text += status.text + '\n\n'
+#                                 text += status.retweeted_status.text + f'\n[View on Twitter](<https://www.twitter.com/i/web/status/{status.id_str}>)\n'
+                    if hasattr(status, 'extended_tweet'):
                         text += status.extended_tweet['full_text'] + f'\n[View on Twitter](<https://www.twitter.com/i/web/status/{status.id_str}>)\n'
                     else:
                         text += status.text + f'\n[View on Twitter](<https://www.twitter.com/i/web/status/{status.id_str}>)\n' 
