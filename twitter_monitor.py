@@ -21,8 +21,13 @@ CONSUMER_SECRET = os.environ["CHIRP_CONSUMER_SECRET"]
 ACCESS_TOKEN = os.environ["CHIRP_ACCESS_TOKEN"]
 ACCESS_SECRET = os.environ["CHIRP_ACCESS_SECRET"]
 
+''' Data for FOMO discord channel '''
 WEBHOOK_ID = os.environ["CHIRP_WEBHOOK_ID"]
 WEBHOOK_TOKEN = os.environ["CHIRP_WEBHOOK_TOKEN"]
+
+''' Data for all channels which are posted to '''
+CHANNEL_DATA = [(str(WEBHOOK_ID), str(WEBHOOK_TOKEN)), 
+                ('511234986142335000', 'aN_ZahCW_DCzlCiXaus8rUfiHpvhYUaX6loXZGu1mU0X7D7wGZjLK1WBMx75NXbDx0AI')]
 
 class Client():
     def __init__(self):
@@ -86,11 +91,13 @@ class Management(object):
                 "color": 0x76d6ff,
             }]
         }
-        post_req = requests.post(f'https://discordapp.com/api/webhooks/{WEBHOOK_ID}/{WEBHOOK_TOKEN}', data=json.dumps(payload), headers=headers)
-        if post_req.status_code != 200:
-            print('Post failed with error', post_req.status_code, 'because', post_req.reason)
-        else:
-            print('Post successful!')
+        
+        for webhook in CHANNEL_DATA:
+            post_req = requests.post(f'https://discordapp.com/api/webhooks/{webhook[0]}/{webhook[1]}', data=json.dumps(payload), headers=headers)
+            if post_req.status_code != 200:
+                print('Post failed with error', post_req.status_code, 'because', post_req.reason)
+            else:
+                print('Post successful!')
 
 
 class TwitterAuthenticator():
