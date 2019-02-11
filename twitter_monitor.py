@@ -27,7 +27,7 @@ WEBHOOK_TOKEN = os.environ["CHIRP_WEBHOOK_TOKEN"]
 
 ''' Data for all channels which are posted to '''
 CHANNEL_DATA = [(str(WEBHOOK_ID), str(WEBHOOK_TOKEN)), 
-                ('511234986142335000', 'aN_ZahCW_DCzlCiXaus8rUfiHpvhYUaX6loXZGu1mU0X7D7wGZjLK1WBMx75NXbDx0AI')]
+                ('544567504735961143', 'KOp2ecNfLLLsElN6YH2A5lkMSgucgNpAg-dpoqIipx86HSR85OGj44bMoINMDHyH048F')]
 
 class Client():
     def __init__(self):
