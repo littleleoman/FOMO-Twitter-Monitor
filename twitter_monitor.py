@@ -26,8 +26,8 @@ WEBHOOK_ID = os.environ["CHIRP_WEBHOOK_ID"]
 WEBHOOK_TOKEN = os.environ["CHIRP_WEBHOOK_TOKEN"]
 
 ''' Data for all channels which are posted to '''
-CHANNEL_DATA = [(str(WEBHOOK_ID), str(WEBHOOK_TOKEN)), 
-                ('544567504735961143', 'KOp2ecNfLLLsElN6YH2A5lkMSgucgNpAg-dpoqIipx86HSR85OGj44bMoINMDHyH048F')]
+CHANNEL_DATA = [{"ID":str(WEBHOOK_ID), "TOKEN":str(WEBHOOK_TOKEN)}, 
+                {"ID":'544567504735961143', "TOKEN":'KOp2ecNfLLLsElN6YH2A5lkMSgucgNpAg-dpoqIipx86HSR85OGj44bMoINMDHyH048F'}]
 
 class Client():
     def __init__(self):
@@ -45,7 +45,7 @@ class Client():
                         '956619435456024576', '768416589750345728', '952919889379053568',
                         '863006606124085248', '914897340280053763', '944071591201267712',
                         '936550436470800384', '852706122226176000', '941082441107853312', 
-                        '936472526472933376']
+                        '936472526472933376', '1062494333180485632']
 
 class Management(object):
     
@@ -73,11 +73,12 @@ class Management(object):
             "avatar_url": profile_pic,
             "content": text
         }
-        post_req = requests.post(f'https://discordapp.com/api/webhooks/{WEBHOOK_ID}/{WEBHOOK_TOKEN}', data=json.dumps(payload), headers=headers)
-        if post_req.status_code != 200:
-            print('Post failed with error', post_req.status_code, 'because', post_req.reason)
-        else:
-            print('Post successful!')
+        for webhook in CHANNEL_DATA:
+            post_req = requests.post(f'https://discordapp.com/api/webhooks/{webhook["ID"}/{webhook["TOKEN"]}', data=json.dumps(payload), headers=headers)
+            if post_req.status_code != 200:
+                print('Post failed with error', post_req.status_code, 'because', post_req.reason)
+            else:
+                print('Post successful!')
             
     def post_error_to_discord(self, error_code, error_message):
         headers = {
@@ -93,7 +94,7 @@ class Management(object):
         }
         
         for webhook in CHANNEL_DATA:
-            post_req = requests.post(f'https://discordapp.com/api/webhooks/{webhook[0]}/{webhook[1]}', data=json.dumps(payload), headers=headers)
+            post_req = requests.post(f'https://discordapp.com/api/webhooks/{webhook["ID"}/{webhook["TOKEN"]}', data=json.dumps(payload), headers=headers)
             if post_req.status_code != 200:
                 print('Post failed with error', post_req.status_code, 'because', post_req.reason)
             else:
